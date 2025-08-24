@@ -11,11 +11,13 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - **NEVER checkout, pull, or switch to `main` branch** - The main branch is off-limits
 - **NEVER push directly to main** - All changes must go through draft branch
 - **DO NOT merge to main yourself** - Only authorized personnel handle main branch merges
+- **NEVER CREATE NEW BRANCHES AUTOMATICALLY** - Branch creation is strictly forbidden. Only use existing branches
+- **DO NOT use `git checkout -b` or `git branch`** - Creating branches is not allowed under any circumstances
 
 ### Correct workflow:
 ```bash
 # ALWAYS ensure you're on draft branch before any work
-git checkout draft
+git checkout draft  # ONLY checkout existing branches, NEVER create new ones
 
 # Make your changes on draft branch only
 git add .
@@ -23,9 +25,21 @@ git commit -m "your message"
 git push origin draft
 ```
 
+### FORBIDDEN Commands - NEVER USE:
+```bash
+# ❌ NEVER create new branches
+git checkout -b new-branch  # FORBIDDEN
+git branch new-branch       # FORBIDDEN
+git switch -c new-branch    # FORBIDDEN
+
+# ❌ NEVER switch to main
+git checkout main           # FORBIDDEN
+git pull origin main        # FORBIDDEN
+```
+
 If accidentally on main branch, immediately switch to draft without making any changes:
 ```bash
-git checkout draft
+git checkout draft  # Switch to existing draft branch only
 ```
 
 ## Repository Overview
