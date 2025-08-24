@@ -2,6 +2,32 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+## 🚨 CRITICAL BRANCH MANAGEMENT RULE
+
+**NEVER work directly on the `main` branch. This is absolutely forbidden.**
+
+### Mandatory Git Workflow:
+- **ALWAYS work on the `draft` branch** - No exceptions
+- **NEVER checkout, pull, or switch to `main` branch** - The main branch is off-limits
+- **NEVER push directly to main** - All changes must go through draft branch
+- **DO NOT merge to main yourself** - Only authorized personnel handle main branch merges
+
+### Correct workflow:
+```bash
+# ALWAYS ensure you're on draft branch before any work
+git checkout draft
+
+# Make your changes on draft branch only
+git add .
+git commit -m "your message"
+git push origin draft
+```
+
+If accidentally on main branch, immediately switch to draft without making any changes:
+```bash
+git checkout draft
+```
+
 ## Repository Overview
 
 This is a docs-as-code repository using MkDocs with Material theme to create a company documentation hub. The documentation is automatically deployed to GitHub Pages at https://ravikandas.github.io/company-docs/
@@ -22,10 +48,11 @@ mkdocs build  # Creates site/ directory
 
 ### Deployment
 ```bash
-# Manual deployment to GitHub Pages (automated via GitHub Actions)
-mkdocs gh-deploy --force --clean
+# WARNING: Never deploy manually from your local machine
+# Deployment happens automatically when draft branch is merged to main by authorized personnel
 
-# The site auto-deploys on push to main branch via GitHub Actions
+# The site auto-deploys when changes are merged to main branch via GitHub Actions
+# You should NEVER trigger deployment yourself
 ```
 
 ## Architecture
@@ -45,23 +72,30 @@ mkdocs gh-deploy --force --clean
 3. **Navigation**: Defined in mkdocs.yml under the `nav:` section
 4. **Theme features**: Material theme with dark/light mode toggle, search, and code copy buttons
 
-### Deployment Flow
-1. Push changes to `main` branch
-2. GitHub Actions workflow triggers automatically
-3. Builds MkDocs site and deploys to `gh-pages` branch
-4. GitHub Pages serves from `gh-pages` branch
+### Deployment Flow (Handled by authorized personnel only)
+1. Changes are pushed to `draft` branch by contributors
+2. Authorized personnel review and merge draft to `main` branch
+3. GitHub Actions workflow triggers automatically on main
+4. Builds MkDocs site and deploys to `gh-pages` branch
+5. GitHub Pages serves from `gh-pages` branch
+
+**Remember: You work on draft branch only. Never interact with main branch.**
 
 ## Adding Documentation
 
 ### To add a new page:
-1. Create `.md` file in appropriate directory under `docs/`
-2. Add entry to `nav:` section in `mkdocs.yml`
-3. Commit and push to main branch
+1. **Ensure you're on draft branch**: `git checkout draft`
+2. Create `.md` file in appropriate directory under `docs/`
+3. Add entry to `nav:` section in `mkdocs.yml`
+4. Commit and push to draft branch: `git push origin draft`
+5. Create pull request for review (NEVER merge to main yourself)
 
 ### To modify existing content:
-1. Edit the `.md` file directly
-2. No need to update mkdocs.yml unless changing navigation
-3. Changes deploy automatically after merge to main
+1. **Ensure you're on draft branch**: `git checkout draft`
+2. Edit the `.md` file directly
+3. No need to update mkdocs.yml unless changing navigation
+4. Commit and push to draft branch: `git push origin draft`
+5. Changes deploy automatically after authorized merge to main
 
 ## Important Files to Update
 
